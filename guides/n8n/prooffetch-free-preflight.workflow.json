@@ -1,0 +1,185 @@
+{
+  "id": "N8NprooffetchRelease28",
+  "name": "ProofFetch — free metadata and explicit paid handoff",
+  "active": false,
+  "nodes": [
+    {
+      "id": "manual",
+      "name": "Manual test only",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "settings",
+      "name": "Choose public URL",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        200,
+        0
+      ],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "public-url",
+              "name": "url",
+              "value": "https://example.com/",
+              "type": "string"
+            },
+            {
+              "id": "extraction-limit",
+              "name": "maxChars",
+              "value": 30000,
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": false,
+        "options": {}
+      }
+    },
+    {
+      "id": "input",
+      "name": "Validate public URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "function prepareInput(input) {\n  if (!input || typeof input.url !== 'string' || input.url.length > 2048) throw new Error('input_url_invalid');\n  let url = input.url.trim();\n  // Intentionally bounded ASCII public-host syntax. The service performs DNS/redirect policy.\n  const match = /^(https?):\\/\\/([a-z0-9.-]+)(\\/[^\\s#]*)?(?:#[^\\s]*)?$/i.exec(url);\n  if (!match || !match[2].includes('.') || /(?:^|\\.)localhost$/i.test(match[2]) || /^[\\d.]+$/.test(match[2])) throw new Error('input_url_invalid');\n  url = match[1].toLowerCase()+'://'+match[2].toLowerCase()+(match[3] || '/');\n  const maxChars = input.maxChars ?? 30000;\n  if (!Number.isInteger(maxChars) || maxChars < 1000 || maxChars > 50000) throw new Error('input_max_chars_invalid');\n  return {url,maxChars,attribution:'unknown'};\n}\nreturn [{json:prepareInput($input.first().json)}];"
+      }
+    },
+    {
+      "id": "free",
+      "name": "Free metadata only",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        620,
+        0
+      ],
+      "onError": "continueRegularOutput",
+      "retryOnFail": false,
+      "parameters": {
+        "method": "POST",
+        "url": "https://proof-fetch-agent-api.neoaethel.workers.dev/v1/preflight",
+        "authentication": "none",
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({url: $json.url, maxChars: $json.maxChars}) }}",
+        "options": {
+          "timeout": 15000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true,
+              "responseFormat": "text",
+              "outputPropertyName": "body"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "handoff",
+      "name": "Review metadata and paid handoff",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        860,
+        0
+      ],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "function mapPreflight(response, input, nowMs = Date.now()) {\n  const fail = (code, retryable=false) => ({schema:'prooffetch-n8n-handoff.v1',state:'failed',code,retryable,attribution:'unknown',paymentAttempted:false,contentIncluded:false,handoff:null});\n  const obj = value => value && typeof value === 'object' && !Array.isArray(value);\n  if (!obj(response) || response.error || !Number.isInteger(response.statusCode)) return fail('transport_or_node_error',true);\n  let body;\n  try { body=typeof response.body==='string' ? JSON.parse(response.body) : response.body; } catch { return fail('response_not_json'); }\n  if (!obj(body)) return fail('response_contract_invalid');\n  if (response.statusCode!==200) {\n    const known=new Set(['url_required','url_invalid','url_protocol_forbidden','url_credentials_forbidden','url_host_forbidden','url_host_not_public','url_port_forbidden','response_too_large','redirect_location_missing','redirect_limit_exceeded','redirect_target_invalid','content_type_unsupported','extractable_content_empty','free_rate_limit_exceeded','upstream_timeout','upstream_unreachable']);\n    const code=known.has(body.error) || /^upstream_http_[1-5][0-9]{2}$/.test(body.error||'') ? body.error : 'http_error';\n    return {...fail(code,response.statusCode===429 || response.statusCode>=500),httpStatus:response.statusCode};\n  }\n  if (body.error || body.schema!=='proof-fetch-preflight.v1' || !obj(body.document) || !obj(body.integrity) || !obj(body.security) || !obj(body.http)) return fail('response_contract_invalid');\n  if (body.requestedUrl!==input.url) return fail('input_binding_mismatch');\n  const final=typeof body.finalUrl==='string' ? body.finalUrl : '';\n  if (final.length>4096 || !/^https?:\\/\\/[^\\s/@?#]+(?:[/?#][^\\s]*)?$/i.test(final)) return fail('response_contract_invalid');\n  const time=Date.parse(body.retrievedAt);\n  if (typeof body.retrievedAt!=='string' || !Number.isFinite(time) || time>nowMs+300000 || time<nowMs-900000) return fail('receipt_time_invalid');\n  if ('paragraphs' in body.document || 'contentText' in body.document || 'contentText' in body || 'paragraphs' in body) return fail('unexpected_content_in_free_response');\n  const doc=body.document, hash=body.integrity;\n  if (!/^[a-f0-9]{64}$/.test(hash.contentSha256||'') || !/^[a-f0-9]{64}$/.test(hash.rawSha256||'')) return fail('integrity_invalid');\n  if (![doc.paragraphCount,doc.sourceCharacters,doc.returnedCharacters,body.http.bytes].every(x=>Number.isSafeInteger(x)&&x>0) || typeof doc.truncated!=='boolean') return fail('response_contract_invalid');\n  if (!Number.isInteger(body.http.status) || body.http.status<200 || body.http.status>299 || !['low','review','high'].includes(body.security.risk) || !Number.isSafeInteger(body.security.indicatorCount) || body.security.indicatorCount<0) return fail('response_contract_invalid');\n  const offer=body.paidFulfillment;\n  if (!obj(offer) || !obj(offer.price) || offer.protocol!=='mpp-stripe-spt' || offer.route!=='/v1/evidence' || typeof offer.price.amount!=='string' || !/^\\d{1,4}\\.\\d{2}$/.test(offer.price.amount) || Number(offer.price.amount)<=0 || offer.price.currency!=='usd') return fail('offer_contract_invalid');\n  return {\n    schema:'prooffetch-n8n-handoff.v1',state:'awaiting_explicit_paid_authorization',attribution:'unknown',paymentAttempted:false,contentIncluded:false,\n    inspection:{requestedUrl:input.url,finalUrl:final,retrievedAt:body.retrievedAt,paragraphCount:doc.paragraphCount,sourceCharacters:doc.sourceCharacters,returnedCharacters:doc.returnedCharacters,truncated:doc.truncated,contentSha256:hash.contentSha256,rawSha256:hash.rawSha256,risk:body.security.risk,indicatorCount:body.security.indicatorCount},\n    warning:'Metadata is not extracted evidence. Low indicators do not prove safety. Source content can change after preflight.',\n    handoff:{docs:'https://proof-fetch-agent-api.neoaethel.workers.dev/connect',offerSnapshot:{amount:offer.price.amount,currency:offer.price.currency,protocol:offer.protocol,observedAt:body.retrievedAt},requestTemplate:{url:input.url,maxChars:input.maxChars},requiredBeforePurchase:['Explicit buyer authorization and budget in a separate Stripe MPP card/SPT-capable client.','Recheck the live offer. Generate and retain a cryptographically random idempotency key (22–128 URL-safe characters) for this intended purchase.','That separate client calls /v1/evidence and handles the payment challenge; never paste payment tokens into this workflow. Reuse the same key on an uncertain retry.','Validate the paid receipt and compare request/content hashes with the approved scope; source changes require review.'],automaticPayment:false}\n  };\n}\nconst responses=$input.all();\nif(responses.length!==1) throw new Error('Expected exactly one free preflight response');\nreturn [{json:mapPreflight(responses[0].json,$('Validate public URL').first().json),pairedItem:{item:0}}];"
+      }
+    },
+    {
+      "id": "notice",
+      "name": "Read before running",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -320
+      ],
+      "parameters": {
+        "content": "## ProofFetch — free metadata and explicit paid handoff\nEdit grouped public inputs, then run manually. This makes one free request, not a purchase. Read the final typed result; a green execution indicator alone does not prove success. Failed checks never authorize the next step. No credentials, paid engine, automatic retry, schedule or webhook is included.\nMetadata is not extracted paragraph evidence or proof that source content is safe. Payment requires a separate explicitly authorized MPP client.\nAttribution is unknown: no supported n8n campaign tag is assumed. Original bounded wrapper: MIT; hosted services, engines and paid access are excluded. Do not enter private links or secrets.",
+        "height": 260,
+        "width": 900
+      }
+    }
+  ],
+  "connections": {
+    "Manual test only": {
+      "main": [
+        [
+          {
+            "node": "Choose public URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Choose public URL": {
+      "main": [
+        [
+          {
+            "node": "Validate public URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate public URL": {
+      "main": [
+        [
+          {
+            "node": "Free metadata only",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Free metadata only": {
+      "main": [
+        [
+          {
+            "node": "Review metadata and paid handoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": false,
+    "saveDataSuccessExecution": "none",
+    "saveDataErrorExecution": "none",
+    "saveManualExecutions": false
+  },
+  "pinData": {},
+  "tags": [],
+  "versionId": "e168ab37-3abe-427d-adfd-1c14ecabd6e0"
+}

@@ -11,6 +11,9 @@ This repository contains documentation and small client examples only. It does n
 1. [Inspect a URL before giving it to an agent](guides/preflight.md).
 2. [Handle a payment challenge without accidental retries](guides/payment-recovery.md).
 3. With Node 22 or later, run `node examples/preflight.mjs https://example.com` from this repository. The example makes no payment.
+4. In n8n, [inspect free metadata and stop before payment](guides/n8n/README.md) using the bounded client workflow.
+
+The original n8n wrapper and guide in [`guides/n8n`](guides/n8n/README.md) are MIT licensed under that directory's [LICENSE](guides/n8n/LICENSE), as a narrow exception to any repository-wide all-rights-reserved notice. The grant excludes the extraction engine, hosted service, paid paragraphs, upstream material and other repository files.
 
 ## Connect an MCP client
 
