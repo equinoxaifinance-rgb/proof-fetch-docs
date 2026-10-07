@@ -5,7 +5,10 @@ const response = await fetch('https://proof-fetch-agent-api.neoaethel.workers.de
   body: JSON.stringify({url:target,maxChars:30000}),
   signal: AbortSignal.timeout(25000)
 });
-const result = await response.json();
+const raw = await response.text();
+let result;
+try { result = JSON.parse(raw); }
+catch { throw Error(`Preflight HTTP ${response.status}: non-JSON response: ${raw.slice(0, 200)}`); }
 if (!response.ok) throw Error(`Preflight HTTP ${response.status}: ${result.error || 'request failed'}`);
 if (result.document?.paragraphs || result.document?.contentText) throw Error('Unexpected free-response content; stop and report');
 console.log(JSON.stringify(result,null,2));
