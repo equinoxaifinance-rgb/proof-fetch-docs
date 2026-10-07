@@ -17,7 +17,7 @@ The original n8n wrapper and guide in [`guides/n8n`](guides/n8n/README.md) are M
 
 ## Connect an MCP client
 
-Use Streamable HTTP at `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`. Its two tools are `proof_fetch_preflight` and `proof_fetch_offer`. Neither tool returns the paid page text. Paying clients use `POST /v1/evidence` separately.
+Use Streamable HTTP at `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`. Its two tools are `proof_fetch_preflight` and `proof_fetch_offer`. Official MCP Registry identity: `io.github.equinoxaifinance-rgb/proof-fetch` (see [server.json](server.json)). Neither tool returns the paid page text. Paying clients use `POST /v1/evidence` separately.
 
 ## What you receive
 
