@@ -4,6 +4,10 @@ Inspect a public URL free. Purchase its extracted, paragraph-addressable text fo
 
 [Try the preflight](https://proof-fetch-agent-api.neoaethel.workers.dev/) · [Current offer](https://proof-fetch-agent-api.neoaethel.workers.dev/offer) · [OpenAPI](https://proof-fetch-agent-api.neoaethel.workers.dev/openapi.json) · [Support](https://proof-fetch-agent-api.neoaethel.workers.dev/policies/support)
 
+For agents: [llms.txt](https://proof-fetch-agent-api.neoaethel.workers.dev/llms.txt) · [A2A agent card](https://proof-fetch-agent-api.neoaethel.workers.dev/.well-known/agent-card.json) · [connection guide](https://proof-fetch-agent-api.neoaethel.workers.dev/connect) · MCP registry name `io.github.equinoxaifinance-rgb/proof-fetch`
+
+Before paying: [terms](https://proof-fetch-agent-api.neoaethel.workers.dev/policies/terms) · [privacy](https://proof-fetch-agent-api.neoaethel.workers.dev/policies/privacy) · [refunds](https://proof-fetch-agent-api.neoaethel.workers.dev/policies/refunds)
+
 This repository contains documentation and small client examples only. It does not contain the extraction engine, a payment credential, or a way to obtain the paid paragraphs free.
 
 ## Start here
@@ -17,7 +21,7 @@ The original n8n wrapper and guide in [`guides/n8n`](guides/n8n/README.md) are M
 
 ## Connect an MCP client
 
-Use Streamable HTTP at `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`. Its two tools are `proof_fetch_preflight` and `proof_fetch_offer`. MCP Registry manifest: [server.json](server.json) (`io.github.equinoxaifinance-rgb/proof-fetch`). Neither tool returns the paid page text. Paying clients use `POST /v1/evidence` separately.
+Use Streamable HTTP at `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`. In Claude Code: `claude mcp add --transport http proof-fetch https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`. Its two tools are `proof_fetch_preflight` and `proof_fetch_offer`. MCP Registry manifest: [server.json](server.json) (`io.github.equinoxaifinance-rgb/proof-fetch`). Neither tool returns the paid page text. Paying clients use `POST /v1/evidence` separately.
 
 ## What you receive
 
