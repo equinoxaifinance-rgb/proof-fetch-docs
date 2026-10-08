@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.equinoxaifinance-rgb/proof-fetch",
+  "title": "ProofFetch",
+  "description": "Free URL preflight with hashes and injection indicators; paid cited paragraph text via Stripe.",
+  "version": "0.2.0",
+  "repository": {
+    "url": "https://github.com/equinoxaifinance-rgb/proof-fetch-docs",
+    "source": "github"
+  },
+  "websiteUrl": "https://proof-fetch-agent-api.neoaethel.workers.dev",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://proof-fetch-agent-api.neoaethel.workers.dev/mcp"
+    }
+  ]
+}
