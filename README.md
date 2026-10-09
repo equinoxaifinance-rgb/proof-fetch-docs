@@ -17,7 +17,7 @@ This repository contains documentation and small client examples only. It does n
 3. With Node 22 or later, run `node examples/preflight.mjs https://example.com` from this repository. The example makes no payment.
 4. In n8n, [inspect free metadata and stop before payment](guides/n8n/README.md) using the bounded client workflow.
 
-The original n8n wrapper and guide in [`guides/n8n`](guides/n8n/README.md) are MIT licensed under that directory's [LICENSE](guides/n8n/LICENSE), as a narrow exception to any repository-wide all-rights-reserved notice. The grant excludes the extraction engine, hosted service, paid paragraphs, upstream material and other repository files.
+This repository's documentation, discovery metadata and examples, including the n8n wrapper and guide in [`guides/n8n`](guides/n8n/README.md), are MIT licensed under the root [LICENSE](LICENSE). The MIT licence does not cover the ProofFetch extraction engine or the hosted service at `proof-fetch-agent-api.neoaethel.workers.dev`: their source is not in this repository and is not licensed or distributed here. Paid paragraphs, upstream material, credentials and account or payment rights keep their own terms.
 
 ## Connect an MCP client
 
