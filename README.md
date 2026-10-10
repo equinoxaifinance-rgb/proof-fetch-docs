@@ -1,6 +1,6 @@
 # ProofFetch: cited web evidence for agents
 
-Inspect a public URL free. Purchase its extracted, paragraph-addressable text for **US$0.50 per fulfillment** through the separate Stripe MPP card/SPT API.
+Inspect a public URL free and see a preview of about the first 1,000 characters of its text (short pages come back whole). Full extracted, paragraph-addressable text costs **US$0.01 a page** with a 500-page card pack (US$5), or **US$0.50 per call** through Stripe MPP card/SPT, which is Stripe's smallest card charge.
 
 [Try the preflight](https://proof-fetch-agent-api.neoaethel.workers.dev/) · [Current offer](https://proof-fetch-agent-api.neoaethel.workers.dev/offer) · [OpenAPI](https://proof-fetch-agent-api.neoaethel.workers.dev/openapi.json) · [Support](https://proof-fetch-agent-api.neoaethel.workers.dev/policies/support)
 

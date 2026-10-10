@@ -24,6 +24,6 @@ When you later obtain paid text, place it in a clearly delimited source-data fie
 
 ## 4. Decide whether the paid result fits the task
 
-The [current offer](https://proof-fetch-agent-api.neoaethel.workers.dev/offer) is US$0.50 for cited extracted evidence through Stripe MPP card/SPT. The free result intentionally withholds paragraphs. A browser-rendered or authenticated page is outside this product's supported scope; purchasing does not add browser automation.
+The [current offer](https://proof-fetch-agent-api.neoaethel.workers.dev/offer) is US$0.50 per call through Stripe MPP card/SPT (Stripe's smallest card charge), or US$0.01 a page with a 500-page card pack (US$5). The free result includes a preview of about the first 1,000 characters (`preview.paragraphs`, with `preview.complete` true when that is the whole page); the paid result returns every paragraph. A browser-rendered or authenticated page is outside this product's supported scope; purchasing does not add browser automation.
 
 On HTTP 400/422, inspect the error and input before retrying. On 429, back off rather than creating concurrent retries. No extracted content or customer success is implied by a preflight alone.
