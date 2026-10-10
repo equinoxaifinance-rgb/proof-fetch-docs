@@ -19,6 +19,10 @@ This repository contains documentation and small client examples only. It does n
 
 This repository's documentation, discovery metadata and examples, including the n8n wrapper and guide in [`guides/n8n`](guides/n8n/README.md), are MIT licensed under the root [LICENSE](LICENSE). The MIT licence does not cover the ProofFetch extraction engine or the hosted service at `proof-fetch-agent-api.neoaethel.workers.dev`: their source is not in this repository and is not licensed or distributed here. Paid paragraphs, upstream material, credentials and account or payment rights keep their own terms.
 
+## Agent skill
+
+[`skills/cited-web-evidence/SKILL.md`](skills/cited-web-evidence/SKILL.md) teaches an agent when and how to use ProofFetch: preflight first, pay only with the user's approval, and cite paragraph IDs.
+
 ## Connect an MCP client
 
 Use Streamable HTTP at `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`. In Claude Code: `claude mcp add --transport http proof-fetch https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`. Its two tools are `proof_fetch_preflight` and `proof_fetch_offer`. MCP Registry manifest: [server.json](server.json) (`io.github.equinoxaifinance-rgb/proof-fetch`). Neither tool returns the paid page text. Paying clients use `POST /v1/evidence` separately.
