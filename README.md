@@ -21,7 +21,7 @@ This repository's documentation, discovery metadata and examples, including the 
 
 ## Agent skill
 
-[`skills/cited-web-evidence/SKILL.md`](skills/cited-web-evidence/SKILL.md) teaches an agent when and how to use ProofFetch: preflight first, pay only with the user's approval, and cite paragraph IDs.
+[`skills/cited-web-evidence/SKILL.md`](skills/cited-web-evidence/SKILL.md) teaches an agent when and how to use ProofFetch: preflight first, pay only with the user's approval, and cite paragraph IDs. Install it into Claude Code, Cursor, Codex or another skills-aware agent with `npx skills add equinoxaifinance-rgb/proof-fetch-docs --skill cited-web-evidence`.
 
 ## Connect an MCP client
 
