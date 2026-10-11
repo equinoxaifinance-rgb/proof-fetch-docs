@@ -12,7 +12,7 @@ ProofFetch is a hosted (remote) MCP server. There is nothing to download, build 
   "mcpServers": {
     "proof-fetch": {
       "type": "streamableHttp",
-      "url": "https://proof-fetch-agent-api.neoaethel.workers.dev/mcp",
+      "url": "https://prooffetch.tryneverclosed.com/mcp",
       "disabled": false
     }
   }
@@ -25,8 +25,8 @@ No API key is needed for the free tools. Paid paragraph text is bought separatel
 
 ## Other clients
 
-- Claude Code: `claude mcp add --transport http proof-fetch https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`
-- Any client that supports Streamable HTTP: point it at `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp`.
+- Claude Code: `claude mcp add --transport http proof-fetch https://prooffetch.tryneverclosed.com/mcp`
+- Any client that supports Streamable HTTP: point it at `https://prooffetch.tryneverclosed.com/mcp`.
 
 ## Check it works
 

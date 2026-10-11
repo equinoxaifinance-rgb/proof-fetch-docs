@@ -16,11 +16,11 @@ This is a schema illustration, not a credential or a reusable production key.
 
 ## 2. Inspect the challenge before paying
 
-Send the request to `POST https://proof-fetch-agent-api.neoaethel.workers.dev/v1/evidence`. Without payment, a successfully fetched and extracted resource returns HTTP 402 with a Stripe MPP challenge. A failed extraction must not be treated as an invitation to pay.
+Send the request to `POST https://prooffetch.tryneverclosed.com/v1/evidence`. Without payment, a successfully fetched and extracted resource returns HTTP 402 with a Stripe MPP challenge. A failed extraction must not be treated as an invitation to pay.
 
 Use an MPP-capable buyer implementation and a buyer-authorized Stripe shared payment token. Verify the amount, currency, merchant and challenge binding against the approved offer. The present price is US$0.50. Do not invent a token, put a card number in the JSON, or assume stablecoins are supported.
 
-The [OpenAPI](https://proof-fetch-agent-api.neoaethel.workers.dev/openapi.json) and [offer](https://proof-fetch-agent-api.neoaethel.workers.dev/offer) are the machine-readable contracts. A client needs an actual supported buyer payment setup; this guide is not a universal one-command checkout SDK.
+The [OpenAPI](https://prooffetch.tryneverclosed.com/openapi.json) and [offer](https://prooffetch.tryneverclosed.com/offer) are the machine-readable contracts. A client needs an actual supported buyer payment setup; this guide is not a universal one-command checkout SDK.
 
 ## 3. Keep the response and recovery material together
 

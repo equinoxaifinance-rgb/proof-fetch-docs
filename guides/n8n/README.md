@@ -8,7 +8,7 @@
 2. Read the note. In **Choose public URL**, enter a public HTTP(S) URL and optionally set `maxChars` to an integer from 1,000 to 50,000 (default 30,000).
 3. Leave the workflow unpublished and execute it manually. Read **Review metadata and paid handoff**; a green n8n execution indicator alone is not successful inspection.
 4. `awaiting_explicit_paid_authorization` means the response passed this metadata contract. `paymentAttempted` and `contentIncluded` remain false.
-5. If paid evidence is needed, follow the returned [connection instructions](https://proof-fetch-agent-api.neoaethel.workers.dev/connect) in a separate Stripe MPP card/SPT-capable client. Approve current price and scope there. This is not a hosted checkout link, and this recipe never handles payment tokens.
+5. If paid evidence is needed, follow the returned [connection instructions](https://prooffetch.tryneverclosed.com/connect) in a separate Stripe MPP card/SPT-capable client. Approve current price and scope there. This is not a hosted checkout link, and this recipe never handles payment tokens.
 
 Use only nonsensitive public links. Do not enter credentials, private/customer URLs or secrets in paths/query strings. The bounded input guard rejects unsupported syntax; the service still owns DNS, redirect and network-destination enforcement. Instance retention can override workflow preferences: check it before handling sensitive data.
 
@@ -18,7 +18,7 @@ The final node verifies HTTP status, schema, requested-URL binding, metadata typ
 
 Errors produce `state=failed`, a typed code and `handoff=null`. A wrong input binding, stale/future timestamp, malformed response, altered paid route or unexpected content field is a failure even if HTTP returned 200. Correct bad input first. HTTP 429/5xx and transport failures may be marked retryable; wait and make an explicit manual retry decision. There is no automatic retry loop.
 
-The successful handoff requires a separate buyer-authorized payment client, current offer review, high-entropy idempotency key retained across uncertain retries, and verification of the paid receipt. Those payment capabilities are not implemented by this free wrapper. See the live [offer](https://proof-fetch-agent-api.neoaethel.workers.dev/offer) and [API contract](https://proof-fetch-agent-api.neoaethel.workers.dev/openapi.json); no permanently fixed price is promised here.
+The successful handoff requires a separate buyer-authorized payment client, current offer review, high-entropy idempotency key retained across uncertain retries, and verification of the paid receipt. Those payment capabilities are not implemented by this free wrapper. See the live [offer](https://prooffetch.tryneverclosed.com/offer) and [API contract](https://prooffetch.tryneverclosed.com/openapi.json); no permanently fixed price is promised here.
 
 ## Verification and boundaries
 
