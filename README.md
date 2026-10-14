@@ -1,6 +1,6 @@
 # ProofFetch: cited web evidence for agents
 
-Inspect a public URL free and see a preview of about the first 1,000 characters of its text (short pages come back whole). Full extracted, paragraph-addressable text: **500 extractions for $5.00.** **1 cent a page with a card pack. 50 cents if your agent pays per call** (Stripe MPP card/SPT; 50 cents is Stripe's smallest card charge).
+Free check with a text preview (about the first 1,000 characters; short pages come back whole). Full text: 500 pages for $5 by card (1¢ a page), or $0.50 per call if your agent pays automatically through Stripe.
 
 [Try the preflight](https://prooffetch.tryneverclosed.com/) · [Current offer](https://prooffetch.tryneverclosed.com/offer) · [OpenAPI](https://prooffetch.tryneverclosed.com/openapi.json) · [Support](https://prooffetch.tryneverclosed.com/policies/support)
 
@@ -35,6 +35,6 @@ Supported: public HTML, XHTML, text and JSON, at most 1 MiB and five redirects. 
 
 ## Design-partner invitation
 
-Building a research agent and struggling to preserve citations or recover paid requests? Open a non-sensitive [support case](https://prooffetch.tryneverclosed.com/policies/support) describing the integration step and client. Save the returned case ID and access token to read the reply. Never send keys, private source URLs, personal contact details or customer content. Onboarding uses the existing offer; no unlimited free access or performance guarantee is promised.
+Building a research agent and struggling to preserve citations or recover paid requests? Open a [support case](https://prooffetch.tryneverclosed.com/policies/support).
 
-Documentation prepared with AI assistance and checked against the public API. Product owner: ProofFetch. No adoption, customer or revenue claim is implied by these examples.
+Documentation prepared with AI assistance and checked against the public API. ProofFetch is operated by Neverclosed (https://tryneverclosed.com). Support: bryan@tryneverclosed.com or https://prooffetch.tryneverclosed.com/policies/support
