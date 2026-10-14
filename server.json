@@ -2,17 +2,17 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.equinoxaifinance-rgb/proof-fetch",
   "title": "ProofFetch",
-  "description": "Free URL check with text preview and hashes; full cited text from $0.01 a page via Stripe.",
-  "version": "0.2.0",
+  "description": "Cited web text extraction for agents: 25 free extractions per key, then 500 for $5.00 via Stripe.",
+  "version": "0.3.0",
   "repository": {
     "url": "https://github.com/equinoxaifinance-rgb/proof-fetch-docs",
     "source": "github"
   },
-  "websiteUrl": "https://proof-fetch-agent-api.neoaethel.workers.dev",
+  "websiteUrl": "https://prooffetch.tryneverclosed.com",
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://proof-fetch-agent-api.neoaethel.workers.dev/mcp"
+      "url": "https://prooffetch.tryneverclosed.com/mcp"
     }
   ]
 }

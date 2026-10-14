@@ -25,7 +25,7 @@ This repository's documentation, discovery metadata and examples, including the 
 
 ## Connect an MCP client
 
-Use Streamable HTTP at `https://prooffetch.tryneverclosed.com/mcp` (the original `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp` keeps working, and the MCP Registry entry still lists it). In Claude Code: `claude mcp add --transport http proof-fetch https://prooffetch.tryneverclosed.com/mcp`. Its free tools are `proof_fetch_preflight` and `proof_fetch_offer`. It also lists `proof_fetch_evidence`, which returns the paid text and needs a ProofFetch card-pack key sent as `Authorization: Bearer <key>`. MCP Registry manifest: [server.json](server.json) (`io.github.equinoxaifinance-rgb/proof-fetch`). The free tools never return the paid page text. Clients paying per call through Stripe MPP use `POST /v1/evidence`.
+Use Streamable HTTP at `https://prooffetch.tryneverclosed.com/mcp` (the original `https://proof-fetch-agent-api.neoaethel.workers.dev/mcp` keeps working). In Claude Code: `claude mcp add --transport http proof-fetch https://prooffetch.tryneverclosed.com/mcp`. Its free tools are `proof_fetch_preflight` and `proof_fetch_offer`. It also lists `proof_fetch_evidence`, which returns the paid text and needs a ProofFetch card-pack key sent as `Authorization: Bearer <key>`. MCP Registry manifest: [server.json](server.json) (`io.github.equinoxaifinance-rgb/proof-fetch`). The free tools never return the paid page text. Clients paying per call through Stripe MPP use `POST /v1/evidence`.
 
 ## What you receive
 
