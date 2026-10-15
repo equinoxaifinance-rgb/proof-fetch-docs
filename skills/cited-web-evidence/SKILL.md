@@ -1,6 +1,6 @@
 ---
 name: cited-web-evidence
-description: Fetch a public web page as citable evidence (paragraph IDs, SHA-256 hashes, redirect chain, retrieval time, prompt-injection warnings) through ProofFetch. Use when an answer must cite exactly what a public page said, or when page text must be kept as proof. Free preflight first (includes a short text preview); full text costs US$0.01 a page with a 500-page card pack, or US$0.50 per call through Stripe MPP.
+description: Fetch a public web page as citable evidence (paragraph IDs, SHA-256 hashes, redirect chain, retrieval time, prompt-injection warnings) through ProofFetch. Use when an answer must cite exactly what a public page said, or when page text must be kept as proof. Free preflight first (includes a short text preview); full text costs US$0.01 a page either way: a 500-page card pack for US$5, or a US$0.50 Stripe MPP payment that returns the page plus an API key holding 49 more.
 ---
 
 # Cited web evidence with ProofFetch
@@ -30,7 +30,7 @@ Call `proof_fetch_preflight` with the URL, or `POST /v1/preflight` with `{"url":
 Spending money needs explicit approval from the user. Never pay just because an offer exists.
 
 - **Credit key (simplest):** the user buys 500 extractions for US$5 (one cent a page) by card on https://prooffetch.tryneverclosed.com/ and gives you the API key. Send `POST /v1/evidence` with `Authorization: Bearer <key>` and the body `{"url": "...", "maxChars": 30000, "idempotencyKey": "<random 22+ chars>"}`. A credit is used only when extraction succeeds.
-- **Machine payment:** without a key, `POST /v1/evidence` answers HTTP 402 with a Stripe MPP challenge (US$0.50). Pay only with a buyer-authorized MPP setup. Reuse the same idempotency key to recover an interrupted request; never create a new purchase to retry.
+- **Machine payment:** without a key, `POST /v1/evidence` answers HTTP 402 with a Stripe MPP challenge (US$0.50). Pay only with a buyer-authorized MPP setup. The paid response carries `callBundle.apiKey`, a ProofFetch key holding 49 more extractions; store it and send it as `Authorization: Bearer <key>` on later calls instead of paying again. Reuse the same idempotency key to recover an interrupted request; never create a new purchase to retry.
 
 ## 4. Use the result
 
